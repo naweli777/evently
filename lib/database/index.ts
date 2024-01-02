@@ -17,6 +17,8 @@ export const connectToDatabase = async () => {
       bufferCommands: false,
     });
   cached.conn = await cached.promise;
+  console.log("first")
 
-  return cached.com;
+  return { connection: cached.conn, status: 'Server is running' };
 };
+
