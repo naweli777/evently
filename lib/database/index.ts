@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI =
+  "mongodb+srv://vermanaweli07:123123123@cluster0.9pg32eg.mongodb.net/event?retryWrites=true&w=majority";
 
 //cached var initialization,global hoold cached connection
 let cached = (global as any).mongoose || { conn: null, proname: null };
@@ -13,12 +14,17 @@ export const connectToDatabase = async () => {
   cached.promise =
     cached.promise ||
     mongoose.connect(MONGODB_URI, {
-      dbName: "evently",
+      dbName: "event",
       bufferCommands: false,
     });
-  cached.conn = await cached.promise;
-  console.log("first")
 
-  return { connection: cached.conn, status: 'Server is running' };
+  try {
+    cached.conn = await cached.promise;
+    console.log("MongoDB connected successfully");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    throw error;
+  }
+
+  return { connection: cached.conn, status: "Server is running" };
 };
-
